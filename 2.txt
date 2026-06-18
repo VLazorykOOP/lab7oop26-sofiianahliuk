@@ -1,0 +1,89 @@
+#include <iostream>
+#include <cstring>
+#include <clocale>
+
+using namespace std;
+
+template <typename T>
+void insertionSort(T arr[], int n) {
+    for (int i = 1; i < n; i++) {
+        T key = arr[i];
+        int j = i - 1;
+
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+
+        arr[j + 1] = key;
+    }
+}
+
+
+template <>
+void insertionSort<char*>(char* arr[], int n) {
+    for (int i = 1; i < n; i++) {
+        char* key = arr[i];
+        int j = i - 1;
+
+        while (j >= 0 && strcmp(arr[j], key) > 0) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+
+        arr[j + 1] = key;
+    }
+}
+
+template <typename T>
+void printArray(T arr[], int n) {
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
+
+
+int main() {
+    setlocale(LC_ALL, "ukr");
+
+    int a[] = { 5, 2, 9, 1, 3 };
+    int n1 = 5;
+
+    cout << "INT до сортування: ";
+    printArray(a, n1);
+
+    insertionSort(a, n1);
+
+    cout << "INT після сортування: ";
+    printArray(a, n1);
+
+    cout << endl;
+
+    double b[] = { 3.2, 1.5, 7.8, 2.1 };
+    int n2 = 4;
+
+    cout << "DOUBLE до сортування: ";
+    printArray(b, n2);
+
+    insertionSort(b, n2);
+
+    cout << "DOUBLE після сортування: ";
+    printArray(b, n2);
+
+    cout << endl;
+
+ 
+    char* c[] = { (char*)"banana", (char*)"apple", (char*)"cherry", (char*)"date" };
+    int n3 = 4;
+
+    cout << "char* до сортування: ";
+    printArray(c, n3);
+
+    insertionSort(c, n3);
+
+    cout << "char* після сортування: ";
+    printArray(c, n3);
+
+    return 0;
+}

@@ -1,0 +1,119 @@
+#include <iostream>
+#include <clocale>
+
+using namespace std;
+
+template <typename T>
+struct Node {
+    T data;
+    Node* left;
+    Node* right;
+
+    Node(T value) {
+        data = value;
+        left = right = nullptr;
+    }
+};
+
+template <typename T>
+class BinaryTree {
+private:
+    Node<T>* root;
+
+    Node<T>* insert(Node<T>* node, T value) {
+        if (node == nullptr) {
+            return new Node<T>(value);
+        }
+
+        if (value < node->data) {
+            node->left = insert(node->left, value);
+        }
+        else {
+            node->right = insert(node->right, value);
+        }
+
+        return node;
+    }
+
+    bool search(Node<T>* node, T value) {
+        if (node == nullptr) return false;
+
+        if (node->data == value) return true;
+
+        if (value < node->data)
+            return search(node->left, value);
+        else
+            return search(node->right, value);
+    }
+
+    void inorder(Node<T>* node) {
+        if (node == nullptr) return;
+
+        inorder(node->left);
+        cout << node->data << " ";
+        inorder(node->right);
+    }
+
+    void reverseInorder(Node<T>* node) {
+        if (node == nullptr) return;
+
+        reverseInorder(node->right);
+        cout << node->data << " ";
+        reverseInorder(node->left);
+    }
+
+public:
+    BinaryTree() {
+        root = nullptr;
+    }
+
+    void insert(T value) {
+        root = insert(root, value);
+    }
+
+    bool search(T value) {
+        return search(root, value);
+    }
+
+    void printAscending() {
+        inorder(root);
+        cout << endl;
+    }
+
+    void printDescending() {
+        reverseInorder(root);
+        cout << endl;
+    }
+};
+
+
+int main() {
+    setlocale(LC_ALL, "ukr");
+
+    BinaryTree<int> tree;
+
+    tree.insert(50);
+    tree.insert(30);
+    tree.insert(70);
+    tree.insert(20);
+    tree.insert(40);
+    tree.insert(60);
+    tree.insert(80);
+
+    cout << "Висхідний порядок: ";
+    tree.printAscending();
+
+    cout << "Спадний порядок: ";
+    tree.printDescending();
+
+    int x;
+    cout << "Введіть число для пошуку: ";
+    cin >> x;
+
+    if (tree.search(x))
+        cout << "Елемент знайдено!" << endl;
+    else
+        cout << "Елемент НЕ знайдено!" << endl;
+
+    return 0;
+}

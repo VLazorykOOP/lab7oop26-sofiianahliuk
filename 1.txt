@@ -1,0 +1,118 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include <ctime>
+#include <clocale>
+
+using namespace std;
+
+template <typename T>
+void mySwap(T& a, T& b) {
+    T temp = a;
+    a = b;
+    b = temp;
+}
+
+template <>
+void mySwap<char*>(char*& a, char*& b) {
+    char* temp = a;
+    a = b;
+    b = temp;
+}
+
+template <typename T>
+void printPair(const T& a, const T& b) {
+    cout << "A = " << a << ", B = " << b << endl;
+}
+
+void testKeyboard() {
+    int a, b;
+    cout << "Введіть 2 числа: ";
+    cin >> a >> b;
+
+    cout << "До swap: ";
+    printPair(a, b);
+
+    mySwap(a, b);
+
+    cout << "Після swap: ";
+    printPair(a, b);
+}
+
+void testFile() {
+    ifstream fin("data.txt");
+    if (!fin) {
+        cout << "Не вдалося відкрити файл!\n";
+        return;
+    }
+
+    double a, b;
+    fin >> a >> b;
+    fin.close();
+
+    cout << "З файлу:\n";
+    cout << "До swap: ";
+    printPair(a, b);
+
+    mySwap(a, b);
+
+    cout << "Після swap: ";
+    printPair(a, b);
+}
+
+
+void testRandom() {
+    srand(time(0));
+
+    int a = rand() % 100;
+    int b = rand() % 100;
+
+    cout << "Random значення:\n";
+    cout << "До swap: ";
+    printPair(a, b);
+
+    mySwap(a, b);
+
+    cout << "Після swap: ";
+    printPair(a, b);
+}
+
+void testCharPtr() {
+    char* a = (char*)"Hello";
+    char* b = (char*)"World";
+
+    cout << "char* до swap: ";
+    printPair(a, b);
+
+    mySwap(a, b);
+
+    cout << "char* після swap: ";
+    printPair(a, b);
+}
+
+int main() {
+    setlocale(LC_ALL, "ukr");
+
+    int choice;
+
+    do {
+        cout << "\n===== МЕНЮ =====\n";
+        cout << "1. Клавіатура (int)\n";
+        cout << "2. Файл (double)\n";
+        cout << "3. Random (int)\n";
+        cout << "4. char*\n";
+        cout << "0. Вихід\n";
+        cout << "Ваш вибір: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1: testKeyboard(); break;
+        case 2: testFile(); break;
+        case 3: testRandom(); break;
+        case 4: testCharPtr(); break;
+        }
+
+    } while (choice != 0);
+
+    return 0;
+}
